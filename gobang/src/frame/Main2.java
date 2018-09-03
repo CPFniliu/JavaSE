@@ -1,12 +1,7 @@
 package frame;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.TreeMap;
-
 import entity.Place;
 import entity.SortedPlaces;
-import util.validate.CpfUtilArr;
 
 public class Main2 {
 
