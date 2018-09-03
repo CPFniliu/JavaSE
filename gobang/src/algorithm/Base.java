@@ -1,14 +1,14 @@
 package algorithm;
 
-import entity.Pt;
+import entity.Part;
 import entity.Place;
 import global.Config;
 
 public class Base {
+	
+	private static final int distance = 2; // 邻居范围
 
-	private boolean[][][] wins = new boolean[15][15][];
-
-	private static final int distance = 3;
+	private static int WIN_COUNT = 5;
 
 	
 	/**
@@ -19,7 +19,7 @@ public class Base {
 	 * @param count 棋子数
 	 * @return
 	 */
-	public static boolean hasNeighbor(final Pt[][] boardSpace, final Place place){
+	public static boolean hasNeighbor(final Part[][] boardSpace, final Place place){
 		if (boardSpace == null || place == null || distance < 0){
 			System.out.println("hasNeighbor : BUG");
 			return false;
@@ -40,57 +40,17 @@ public class Base {
 	}
 
 	
-	/**
-	 * 判断两个点是否为邻居
-	 * @param place1
-	 * @param place2
-	 * @return
-	 */
-	public static boolean isNeighbor(Place place1, Place place2){
-		return Math.abs(place1.x - place2.x) <= 3 && Math.abs(place1.y - place2.y) <= 3;
-	}
+//	/**
+//	 * 判断两个点是否为邻居
+//	 * @param place1
+//	 * @param place2
+//	 * @return
+//	 */
+//	public static boolean isNeighbor(Place place1, Place place2){
+//		return Math.abs(place1.x - place2.x) <= distance && Math.abs(place1.y - place2.y) <= distance;
+//	}
 	
-	
-	// 统计所有可能的赢法,需要好好理解
-	public int countCount() {
-		int count = 0;
-		for (int i = 0; i < 15; i++) {
-			for (int j = 0; j < 11; j++) {
-				for (int k = 0; k < 5; k++) {
-					wins[i][j + k][count] = true;
-				}
-				count++;
-			}
-		}
-		for (int i = 0; i < 11; i++) {
-			for (int j = 0; j < 15; j++) {
-				for (int k = 0; k < 5; k++) {
-					wins[i + k][j][count] = true;
-				}
-				count++;
-			}
-		}
-		for (int i = 0; i < 11; i++) {
-			for (int j = 0; j < 11; j++) {
-				for (int k = 0; k < 5; k++) {
-					wins[i + k][j + k][count] = true;
-				}
-				count++;
-			}
-		}
-		for (int i = 0; i < 11; i++) {
-			for (int j = 14; j > 3; j--) {
-				for (int k = 0; k < 5; k++) {
-					wins[i + k][j - k][count] = true;
-				}
-				count++;
-			}
-		}
-		return count;
-		// 共 572 赢法
-	}
 
-	private static int WIN_COUNT = 5;
 	
 	/**
 	 * 是否胜利(判断当前位置周围是否有5子相连)
@@ -99,7 +59,7 @@ public class Base {
 	 * @param part 
 	 * @return
 	 */
-	public static boolean isWin(Pt[][] boardSpace, Place place, Pt part){
+	public static boolean isWin(Part[][] boardSpace, Place place, Part part){
 		int len = Config.BOARDLENGTH;
 		int i,j,maxI,maxJ;
 		int wincnt = WIN_COUNT - 1;

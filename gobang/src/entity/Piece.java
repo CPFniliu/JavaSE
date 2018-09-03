@@ -9,16 +9,16 @@ public class Piece extends JLabel{
 
 	private static final long serialVersionUID = 1L;
 
-	private Pt part; // 势力
+	private Part part; // 势力
 
-	public Piece(Place place, Pt part, Icon icon) {
+	public Piece(Place place, Part part, Icon icon) {
 		this.setSize(Config.PIECEWIDTH, Config.PIECEWIDTH);
 		this.setIcon(icon);
 		setLocation(place.x * Config.PIECEWIDTH, place.y * Config.PIECEWIDTH);
 		this.part = part;
 	}
 
-	public Pt getPart() {
+	public Part getPart() {
 		return part;
 	}
 	

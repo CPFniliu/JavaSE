@@ -1,11 +1,11 @@
 package algorithm;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 import entity.Place;
-import entity.Pt;
+import entity.Part;
 import entity.Score;
 import global.Config;
 import global.Global;
@@ -26,10 +26,10 @@ public class AlphaBeta {
 	private static final int MAX = Integer.MAX_VALUE;
 	private static final int MIN = - MAX;
 //	private static final int MIN = - Integer.MIN_VALUE; // note : 最小值的负值仍然是最小值
-//	private int total = 0;//总节点数
+	private static int total = 0;//总节点数
+	private static int PVcut = 0;
 //	private int steps = 0;//总步数
 //	private int count = 0;//每次思考的节点数
-//	private int PVcut = 0;
 //	private int ABcut = 0;//AB剪枝次数
 //	private int cacheCount = 0;	//zobrist缓存节点数数
 //	private int cacheGet = 0;	//zobrist缓存命中数量
@@ -43,8 +43,10 @@ public class AlphaBeta {
 	 * @param checkmateDeep
 	 * @return
 	 */
-	public Place getEvaluatedPlace(Pt curPart){
-		Pt oppopt = Pt.getOpposide(curPart);
+	public Place evaluatedPlace(Part curPart){
+		total = 0;
+		PVcut = 0;
+		Part oppopt = Part.getOpposide(curPart);
 		//搜索深度
 		int deep = Config.deep;
 		// 1. 初始化各个变量
@@ -56,7 +58,7 @@ public class AlphaBeta {
 		Situation situation = Global.getSituation();
 		// 2. 获取可以下子的空位列表
 		// 生成待选的列表，就是可以下子的空位
-		Collection<Place> places = situation.getHeuristicPlaces(curPart);
+		List<Place> places = situation.getHeuristicPlaces(curPart);
 		if (places.isEmpty()){
 			return null;
 		}
@@ -70,7 +72,6 @@ public class AlphaBeta {
 			} else {
 				score = maxmin(situation, oppopt, deep - 1, -best); 
 			}
-			situation.setScore(place, score);
 			situation.virtualRemovePiece(place); // 移除刚才下的子
 			if (score == best){
 				bestPlace.add(place);
@@ -81,18 +82,19 @@ public class AlphaBeta {
 				bestPlace.add(place);
 			}
 		}
+		System.out.println(total + " pvcut : " + PVcut);
 		int count = bestPlace.size();
 		int ran = new Random().nextInt(count);
 		return (Place) bestPlace.toArray()[ran];
 	}
 	
 	
-	public int maxmin(Situation situation, Pt pt, int deep, int alphabeta) {
+	public int maxmin(Situation situation, Part pt, int deep, int alphabeta) {
+		total ++;
 		int best = MIN;
 		// 获取空位
-//		List<Place> places = situation.getHasNeighborPlaces();
-		Collection<Place> places = situation.getHeuristicPlaces(pt);
-		Pt oppopt = Pt.getOpposide(pt);
+		List<Place> places = situation.getHeuristicPlaces(pt);
+		Part oppopt = Part.getOpposide(pt);
 		
 		for (Place place : places){  // 如果跟之前的一个好，则把当前位子加入待选位子
 			situation.virtualLocatePiece(place, pt);
@@ -108,6 +110,7 @@ public class AlphaBeta {
 				best = score;
 			}
 			if (score > alphabeta){ // alpha剪枝
+				PVcut ++;
 				break;
 			}
 		}

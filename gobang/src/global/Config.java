@@ -1,7 +1,7 @@
 package global;
 
 import entity.MouseCliceState;
-import entity.Pt;
+import entity.Part;
 import entity.Role;
 
 public class Config {
@@ -49,7 +49,7 @@ public class Config {
 	/**
 	 * 先手方 (初始化黑棋先手)
 	 */
-	public static Pt firstPart = Pt.BLACK;
+	public static Part firstPart = Part.BLACK;
 	/**
 	 * 黑方运算
 	 */
@@ -62,7 +62,7 @@ public class Config {
 	/**
 	 * 搜索深度
 	 */
-	public static int deep = 2;
+	public static int deep = 4;
 	
 	public static MouseCliceState mouseClickState = MouseCliceState.PLAY;
 
@@ -70,8 +70,8 @@ public class Config {
 	 * 获取当前下棋角色 COM, MAN
 	 * @return
 	 */
-	public static Role getRole(Pt part){
-		if (Pt.BLACK.equals(part)){
+	public static Role getRole(Part part){
+		if (Part.BLACK.equals(part)){
 			return blackPartCompute;
 		} else {
 			return whitePartCompute;

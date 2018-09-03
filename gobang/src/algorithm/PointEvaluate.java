@@ -1,7 +1,7 @@
 package algorithm;
 
 import entity.Place;
-import entity.Pt;
+import entity.Part;
 import entity.Score;
 import entity.PointScoreDisposer;
 import global.Config;
@@ -45,7 +45,7 @@ public class PointEvaluate {
 	 * @param y
 	 * @param part
 	 */
-	public static int pointEvaluate(final Pt[][] boardSpace, final Place place , final Pt part){
+	public static int pointEvaluate(final Part[][] boardSpace, final Place place , final Part part){
 		PointScoreDisposer sDisposer = new PointScoreDisposer();
 		int pline = subPointEvaluate(boardSpace, place.x, place.y, 1, 0, part);
 		sDisposer.handleAwayOfPoint(pline);
@@ -72,7 +72,7 @@ public class PointEvaluate {
 	 * @param yaddend  正方向运算时 y 轴每次增加的值
 	 * @param part  当前所评估的势力
 	 */
-	public static int subPointEvaluate(Pt[][] boardSpace, int x, int y, int xaddend, int yaddend, Pt part) {
+	public static int subPointEvaluate(Part[][] boardSpace, int x, int y, int xaddend, int yaddend, Part part) {
 		int count = 1; // 连续棋子的数量（算上评定当前[x，y]位置的棋子数 ）
 	    int block = 0; // 阻碍数量
 	    int empty = -1; // 空位位置（-1则表示无，若block为1时，空位位置自block开始算起）

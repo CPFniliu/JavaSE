@@ -1,14 +1,15 @@
 package algorithm;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import domain.PlacePool;
+import domain.SortedPlaces;
 import entity.Place;
-import entity.Pt;
+import entity.Part;
 import entity.Score;
-import entity.SortedPlaces;
 import global.Config;
 
 public class GenePlaces {
@@ -18,7 +19,7 @@ public class GenePlaces {
 	/**
 	 * @return 获取当前棋盘上可以下的点的List集合
 	 */
-	public static List<Place> getHasNeighborPlaces(Pt[][] board) {
+	public static List<Place> getHasNeighborPlaces(Part[][] board) {
 		List<Place> places = new ArrayList<>();
 		for (int i = Config.BOARDLENGTH - 1 ; i >= 0; i--){
 			for (int j = Config.BOARDLENGTH - 1; j >= 0; j--){
@@ -39,7 +40,7 @@ public class GenePlaces {
 	/**
 	 * @return 获取当前棋盘上可以下的点的List集合
 	 */
-	public static List<Place> getAllBlankPlaces(Pt[][] board) {
+	public static List<Place> getAllBlankPlaces(Part[][] board) {
 		List<Place> placeSet = new ArrayList<>();
 		for (int i = Config.BOARDLENGTH - 1 ; i >= 0; i--){
 			for (int j = Config.BOARDLENGTH - 1; j >= 0; j--){
@@ -62,8 +63,8 @@ public class GenePlaces {
 	 * 
 	 * @return
 	 */
-	public static Collection<Place> getHeuristicPlaces(final Pt[][] board, final Pt thispt) {
-		Pt otherPt = Pt.getOpposide(thispt);
+	public static List<Place> getHeuristicPlaces(final Part[][] board, final Part thispt) {
+		Part otherPt = Part.getOpposide(thispt);
 		List<Place> curKill = null;
 		List<Place> otrKill = null;
 		List<Place> curWinTo1pls = null;
@@ -75,7 +76,6 @@ public class GenePlaces {
 		SortedPlaces sortedPlaces = new SortedPlaces();
 		for (int i = Config.BOARDLENGTH - 1 ; i >= 0; i--){
 			for (int j = Config.BOARDLENGTH - 1; j >= 0; j--){
-				//TODO Place被复用太多次
 				if (board[i][j] == null){
 					Place place = PlacePool.getPlace(i, j);
 					// 判断棋盘上的点周围是否有邻居
@@ -100,7 +100,8 @@ public class GenePlaces {
 						} else if (otrScore >= Score.KILL_TO_TWO){
 							otrWinTo2pls = addOrInit(otrWinTo2pls, place);
 						} else {
-							sortedPlaces.addOrInit(place, curScore - otrScore);
+							sortedPlaces.addOrInit(place, curScore + otrScore / 2);
+//							System.out.println(place + " " + thispt + " " + curScore + " " +  otrScore + " " + (curScore + otrScore));
 						}
 					}
 				}
@@ -126,10 +127,9 @@ public class GenePlaces {
 		} else if (sortedPlaces.hasData()) {
 			return sortedPlaces.getSortedPlaces();
 		} else {
-			System.out.println("nulllllll");
+			JOptionPane.showMessageDialog(null, "getHeuristicPlaces 空值");
 			return getAllBlankPlaces(board);
 		}
-		
 	}
 	
 	

@@ -1,10 +1,10 @@
 package algorithm;
 
-import java.util.Collection;
+import java.util.List;
 
 import entity.BoardScoreRecord;
 import entity.Place;
-import entity.Pt;
+import entity.Part;
 import entity.Score;
 import util.validate.ExceptionUtil;
 
@@ -16,9 +16,9 @@ public class BoardEvaluate {
 	 * @param thispt
 	 * @return
 	 */
-	public static int evaluate(Pt[][] board, Pt thispt) {
-		Pt otherPt = Pt.getOpposide(thispt);
-		Collection<Place> places = GenePlaces.getHeuristicPlaces(board, thispt);
+	public static int evaluate(Part[][] board, Part thispt) {
+		Part otherPt = Part.getOpposide(thispt);
+		List<Place> places = GenePlaces.getHeuristicPlaces(board, thispt);
 		BoardScoreRecord thisRecord = new BoardScoreRecord();
 		BoardScoreRecord otherRecord = new BoardScoreRecord();
 		for (Place place : places) {
@@ -77,8 +77,8 @@ public class BoardEvaluate {
 			return Score.MULTIPLE_THREE;
 		} else if (otherRecord.three >= 2){ // 双三, 3三
 			return Score.MULTIPLE_THREE;
-		} else { // 不是必杀棋返回总分
-			return thisRecord.total - otherRecord.total;
+		} else { // 不是必杀棋返回总分(当前方分数减去对方分数为己方优势分数)
+			return thisRecord.total - otherRecord.total / 2;
 		}
 	}
 	

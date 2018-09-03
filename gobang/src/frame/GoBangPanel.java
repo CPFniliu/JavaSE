@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import algorithm.Compute;
 import domain.PieceFactory;
 import domain.PlacePool;
 import entity.Place;
@@ -81,7 +80,7 @@ public class GoBangPanel extends JPanel implements LambdaMouseListener {
 					if (Role.COM.equals(Global.getSituation().getCurRole())){
 						// TODO 显示轮到COM来继续的信息
 						// 获取COM计算的位置
-						Place computedPalce = Compute.getEvaluatedPlace();
+						Place computedPalce = Global.getSituation().evaluatedPlace();
 						if (computedPalce == null){
 							isAnotherGame("已经没有可以下的位子,是否开启下一局", "阿拉拉");
 						}
