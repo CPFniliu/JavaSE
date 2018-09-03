@@ -173,7 +173,7 @@ public class PointEvaluate {
 			if (block == 0){
 				switch (count) {
 			        case 2: return Score.TWO/2;  		//   ¡ö ¡ð ¡ö 
-			        case 3: return Score.THREE/2;  		//   ¡ö ¡ð ¡ö ¡ö
+			        case 3: return Score.OUT_THREE;  	//   ¡ö ¡ð ¡ö ¡ö
 			        case 4: return Score.BLOCKED_FOUR;	//   ¡ö ¡ð ¡ö ¡ö ¡ö
 			        case 5: return Score.FOUR;   		//   ¡ö ¡ð ¡ö ¡ö ¡ö ¡ö
 				}
@@ -189,7 +189,7 @@ public class PointEvaluate {
 		case 2:
 			if (block == 0){
 				switch (count) {
-		        case 3: return Score.THREE/2;		//  ¡ö ¡ö ¡ð ¡ö 
+		        case 3: return Score.OUT_THREE;		//  ¡ö ¡ö ¡ð ¡ö 
 		        case 4: 							//  ¡ö ¡ö ¡ð ¡ö ¡ö
 		        case 5: return Score.BLOCKED_FOUR;	//  ¡ö ¡ö ¡ð ¡ö ¡ö ¡ö
 		        case 6: return Score.FOUR;			//  ¡ö ¡ö ¡ð ¡ö ¡ö ¡ö ¡ö

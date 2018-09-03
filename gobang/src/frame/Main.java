@@ -5,6 +5,7 @@ import java.util.Arrays;
 import algorithm.PointEvaluate;
 import domain.PlacePool;
 import entity.Part;
+import entity.Place;
 
 public class Main {
 
@@ -21,13 +22,13 @@ public class Main {
 		Part[][] board0 = {
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, WHIT, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, WHIT, null, null, null, null, null, WHIT, null, null, null, null},
-				{null, null, null, null, null, BLCK, null, BLCK, BLCK, BLCK, null, null, null, null, null},
-				{null, null, null, null, null, null, WHIT, null, BLCK, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, BLCK, null, BLCK, null, null, null, null, null},
-				{null, null, null, null, null, null, BLCK, null, WHIT, null, WHIT, null, null, null, null},
-				{null, null, null, null, null, WHIT, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, BLCK, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, WHIT, null, WHIT, null, null, null, null, null, null},
+				{null, null, null, null, null, WHIT, null, null, WHIT, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
@@ -51,10 +52,9 @@ public class Main {
 //		int totle = main.evaluate();
 //		System.out.println(" ===========   totle : " + totle);
 //		main.scorePrint();
-		System.out.println(PointEvaluate.subPointEvaluate(main.board, 3, 6, 1, 1, BLCK));
-		System.out.println(PointEvaluate.subPointEvaluate(main.board, 3, 6, 1, 1, WHIT));
-		System.out.println(PointEvaluate.subPointEvaluate(main.board, 4, 6, 0, 1, BLCK));
-		System.out.println(PointEvaluate.subPointEvaluate(main.board, 4, 6, 0, 1, WHIT));
+		System.out.println(PointEvaluate.subPointEvaluate(main.board, 5, 8, 1, -1, WHIT));
+		System.out.println(PointEvaluate.subPointEvaluate(main.board, 5, 8, 1, 0, WHIT));
+		System.out.println(PointEvaluate.pointEvaluate(main.board, new Place(5, 8), WHIT));
 	}
 	
 	

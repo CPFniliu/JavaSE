@@ -62,7 +62,7 @@ public class Config {
 	/**
 	 * ËÑË÷Éî¶È
 	 */
-	public static int deep = 4;
+	public static int deep = 6;
 	
 	public static MouseCliceState mouseClickState = MouseCliceState.PLAY;
 

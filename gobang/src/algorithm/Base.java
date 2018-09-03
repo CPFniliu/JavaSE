@@ -1,14 +1,25 @@
 package algorithm;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import javax.swing.JOptionPane;
+
+import domain.PlacePool;
 import entity.Part;
 import entity.Place;
 import global.Config;
 
 public class Base {
-	
-	private static final int distance = 2; // ÁÚ¾Ó·¶Î§
-
-	private static int WIN_COUNT = 5;
+	/**
+	 * Á¬5Ê¤Àû
+	 */
+	private static final int WIN_COUNT = 5;
+	/**
+	 * ÁÚ¾Ó·¶Î§°ë¾¶
+	 */
+	private static final int distance = 2;
 
 	
 	/**
@@ -50,6 +61,22 @@ public class Base {
 //		return Math.abs(place1.x - place2.x) <= distance && Math.abs(place1.y - place2.y) <= distance;
 //	}
 	
+
+	/**
+	 * ÔÚÆåÅÌÖÐÐÄËæ±ãÕÒÒ»¿ÕÎ»
+	 * @param board
+	 * @return
+	 */
+	public static List<Place> getRandomCenterPlace(Part[][] board) {
+		Random random = new Random();
+		int i = random.nextInt(Config.BOARDLENGTH - WIN_COUNT * 2) + WIN_COUNT;
+		int j = random.nextInt(Config.BOARDLENGTH - WIN_COUNT * 2) + WIN_COUNT;
+		if (board[i][j] != null) {
+			JOptionPane.showMessageDialog(null, "³ö´íÁË£¡£¡£¡£¡");
+			throw new RuntimeException();
+		}
+		return Arrays.asList(PlacePool.getPlace(i, j));
+	}
 
 	
 	/**

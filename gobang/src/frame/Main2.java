@@ -8,6 +8,14 @@ import entity.Place;
 public class Main2 {
 
 	public static void main(String[] args) {
+		int i = 100;
+		while (i-->0) {
+			System.out.println(new Random().nextInt(3));
+		}
+	}
+	
+
+	public static void timeTest(){
 		long t1, t2;
 		int limit = 100_000;
 		t1 = System.nanoTime();
@@ -16,8 +24,6 @@ public class Main2 {
 		}
 		t2 = System.nanoTime();
 		System.out.println(t2 - t1);
-		
-		
 	}
 	
 	

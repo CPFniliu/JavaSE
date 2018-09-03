@@ -27,7 +27,32 @@ public class BoardEvaluate {
 			int otherScore = PointEvaluate.pointEvaluate(board, place, otherPt);
 			partScoreDispose(otherRecord, otherScore);
 		}
-		return getBoardScore(thisRecord, otherRecord);
+		// 再算分数的时候必杀棋并没有计算在总分内，所以分数应该分为必杀棋分数和普通分数
+		int totalScore;
+		{
+			// 普通(当前方分数减去对方分数为己方优势分数, 因为马上要轮到当前方落子，因此对方的优势是要打折扣的)
+			totalScore = thisRecord.total - otherRecord.total / 2;
+			
+			// 获取必杀棋增分
+			if (thisRecord.five) {
+				totalScore += Score.FIVE;
+			} else if (otherRecord.five) {
+				totalScore -= Score.FIVE;
+			} else if (thisRecord.four || thisRecord.b4 >= 2){ // 双阻四 和 活四
+				totalScore += Score.FOUR;
+			} else if (otherRecord.four || otherRecord.b4 >= 2){ // 双阻四 和 活四
+				totalScore -= Score.FOUR;
+			} else if (thisRecord.b4 == 1 || thisRecord.three > 1){ // b4h3
+				totalScore += Score.THREE_FOUR;
+			} else if (otherRecord.b4 == 1 || otherRecord.three > 1){ // b4h3
+				totalScore -= Score.THREE_FOUR;
+			} else if (thisRecord.three >= 2){ // 双三, 3三
+				totalScore += Score.MULTIPLE_THREE;
+			} else if (otherRecord.three >= 2){ // 双三, 3三
+				totalScore -= Score.MULTIPLE_THREE;
+			}
+		}
+		return totalScore;
 	}
 	
 	
@@ -50,35 +75,14 @@ public class BoardEvaluate {
 			default:
 				ExceptionUtil.throwIllegalValue();
 			}
-		} else if (score >= Score.B4){
+		} else if (score >= Score.BLOCKED_FOUR){
 			record.b4 ++;
 		} else if (score >= Score.THREE){
+			// 这里不计算out3, 因为out3若没有形成双三，则不如活三
 			record.three ++;
-		}
-		record.total += score;
-	}
-	
-	
-	private static int getBoardScore(BoardScoreRecord thisRecord, BoardScoreRecord otherRecord) {
-		// 看看能不能形成绝杀
-		if (thisRecord.five) {
-			return Score.FIVE;
-		} else if (otherRecord.five) {
-			return - Score.FIVE;
-		} else if (thisRecord.four || thisRecord.b4 >= 2){ // 双阻四 和 活四
-			return Score.FOUR;
-		} else if (otherRecord.four || otherRecord.b4 >= 2){ // 双阻四 和 活四
-			return - Score.FOUR;
-		} else if (thisRecord.b4 == 1 || thisRecord.three > 1){ // b4h3
-			return Score.THREE_FOUR;
-		} else if (otherRecord.b4 == 1 || otherRecord.three > 1){ // b4h3
-			return - Score.THREE_FOUR;
-		} else if (thisRecord.three >= 2){ // 双三, 3三
-			return Score.MULTIPLE_THREE;
-		} else if (otherRecord.three >= 2){ // 双三, 3三
-			return Score.MULTIPLE_THREE;
-		} else { // 不是必杀棋返回总分(当前方分数减去对方分数为己方优势分数)
-			return thisRecord.total - otherRecord.total / 2;
+		} else {
+			// 若棋子为必杀棋，则不计入总分
+			record.total += score;
 		}
 	}
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import entity.Place;
 import entity.Part;
 import entity.Role;
+import entity.Score;
 import global.Config;
 import util.validate.CpfUtilArr;
 
@@ -52,7 +53,17 @@ public class Situation implements Cloneable{
 	 * @return
 	 */
 	public boolean isWin(Place place, Part part){
-		return Base.isWin(board, place, part);
+//		return Base.isWin(board, place, part);
+		return PointEvaluate.pointEvaluate(board, place, part) >= Score.KILL_TO_TWO;
+	}
+	
+	
+	/**
+	 * 判断当前局势是否可以胜利
+	 * @return
+	 */
+	public boolean canWin(Place place, Part part){
+		return PointEvaluate.pointEvaluate(board, place, part) >= Score.KILL_TO_TWO;
 	}
 
 	/**
@@ -128,12 +139,12 @@ public class Situation implements Cloneable{
 		return GenePlaces.getHasNeighborPlaces(board);
 	}
 	
-	/**
-	 * @return 获取当前棋盘上可以下的点的List集合
-	 */
-	public List<Place> getAllBlankPlaces() {
-		return GenePlaces.getAllBlankPlaces(board);
-	}
+//	/**
+//	 * @return 获取当前棋盘上可以下的点的List集合
+//	 */
+//	public List<Place> getAllBlankPlaces() {
+//		return GenePlaces.getAllBlankPlaces(board);
+//	}
 	
 	/**
 	 * 启发式搜索函数

@@ -3,12 +3,10 @@ package algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import domain.PlacePool;
 import domain.SortedPlaces;
-import entity.Place;
 import entity.Part;
+import entity.Place;
 import entity.Score;
 import global.Config;
 
@@ -37,22 +35,22 @@ public class GenePlaces {
 		return places;
 	}
 	
-	/**
-	 * @return 获取当前棋盘上可以下的点的List集合
-	 */
-	public static List<Place> getAllBlankPlaces(Part[][] board) {
-		List<Place> placeSet = new ArrayList<>();
-		for (int i = Config.BOARDLENGTH - 1 ; i >= 0; i--){
-			for (int j = Config.BOARDLENGTH - 1; j >= 0; j--){
-				//TODO Place被复用太多次
-				if (board[i][j] == null){
-					Place place = PlacePool.getPlace(i, j);
-					placeSet.add(place);
-				}
-			}
-		}
-		return placeSet;
-	}
+//	/**
+//	 * @return 获取当前棋盘上可以下的点的List集合
+//	 */
+//	public static List<Place> getAllBlankPlaces(Part[][] board) {
+//		List<Place> placeSet = new ArrayList<>();
+//		for (int i = Config.BOARDLENGTH - 1 ; i >= 0; i--){
+//			for (int j = Config.BOARDLENGTH - 1; j >= 0; j--){
+//				//TODO Place被复用太多次
+//				if (board[i][j] == null){
+//					Place place = PlacePool.getPlace(i, j);
+//					placeSet.add(place);
+//				}
+//			}
+//		}
+//		return placeSet;
+//	}
 	
 	/**
 	 * 启发式搜索函数
@@ -127,8 +125,8 @@ public class GenePlaces {
 		} else if (sortedPlaces.hasData()) {
 			return sortedPlaces.getSortedPlaces();
 		} else {
-			JOptionPane.showMessageDialog(null, "getHeuristicPlaces 空值");
-			return getAllBlankPlaces(board);
+			// 此时棋盘上空无一子，则随机在棋盘中心选一位置
+			return Base.getRandomCenterPlace(board);
 		}
 	}
 	

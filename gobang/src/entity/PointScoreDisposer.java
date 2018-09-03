@@ -12,7 +12,8 @@ public class PointScoreDisposer {
 	public void handleAwayOfPoint(int score) {
 		total += score;
 		switch (score) {
-		case Score.THREE:
+		// 两个out_3相当于双三， 在这里out3和h3均可使three增加
+		case Score.OUT_THREE:
 			three ++;
 			break;
 		case Score.BLOCKED_FOUR:
@@ -36,7 +37,7 @@ public class PointScoreDisposer {
 			return Score.MUST_B_KILL;
 		} else if (four || b4 >= 2){ // 双阻四 和 活四
 			return Score.KILL_TO_ONE;
-		} else if (b4 == 1 || three > 1){ // b4h3
+		} else if (b4 == 1 && three > 1){ // b4h3
 			return Score.KILL_TO_1_2;
 		} else if (three >= 2){ // 双三, 3三
 			return Score.KILL_TO_TWO;
@@ -44,5 +45,6 @@ public class PointScoreDisposer {
 			return total;
 		}
 	}
+	
 	
 }

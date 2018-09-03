@@ -4,9 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import entity.Place;
 import entity.Part;
-import entity.Score;
+import entity.Place;
 import global.Config;
 import global.Global;
 
@@ -59,7 +58,8 @@ public class AlphaBeta {
 		// 2. 获取可以下子的空位列表
 		// 生成待选的列表，就是可以下子的空位
 		List<Place> places = situation.getHeuristicPlaces(curPart);
-		if (places.isEmpty()){
+		if (places.isEmpty()){ 
+			// 为空则证明棋盘上已没有空位
 			return null;
 		}
 		HashSet<Place> bestPlace = new HashSet<>();
@@ -67,8 +67,8 @@ public class AlphaBeta {
 		int score;
 		for (Place place : places){  // 如果跟之前的一个好，则把当前位子加入待选位子
 			situation.virtualLocatePiece(place, curPart);  // 尝试下一个子
-			if (situation.isWin(place, curPart)){ // 如果当前落子能够胜利,则置分数为最大,否则通过最小最大函数计算score
-				score = Score.MUST_B_KILL;
+			if (situation.canWin(place, curPart)){ // 如果当前落子能够胜利,则置分数为最大,否则通过最小最大函数计算score
+				score = situation.evaluate(curPart);;
 			} else {
 				score = maxmin(situation, oppopt, deep - 1, -best); 
 			}
@@ -100,7 +100,7 @@ public class AlphaBeta {
 			situation.virtualLocatePiece(place, pt);
 			int score;
 			// 判断搜索深度 和是否 胜利 , 评估的值大于一定分数
-			if (deep <= 1 || situation.isWin(place, pt)){
+			if (deep <= 1 || situation.canWin(place, pt)){
 				score = situation.evaluate(pt);
 			} else {
  				score = maxmin(situation, oppopt, deep - 1, -best); 
