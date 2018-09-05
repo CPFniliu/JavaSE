@@ -14,6 +14,7 @@ public class PointScoreDisposer {
 		switch (score) {
 		// 两个out_3相当于双三， 在这里out3和h3均可使three增加
 		case Score.OUT_THREE:
+		case Score.THREE:
 			three ++;
 			break;
 		case Score.BLOCKED_FOUR:

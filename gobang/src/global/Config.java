@@ -12,8 +12,8 @@ public class Config {
 	/**
 	 * 行列数量
 	 */
-	public static int BOARDLENGTH = 15; 
-	/**
+	public static int BOARDLENGTH = 12; 
+	/** 
 	 * 棋盘边缘宽度
 	 */
 	public static int BORDERWIDTH = 0;
@@ -25,10 +25,6 @@ public class Config {
 	 * 列数
 	 */
 	public static int COLUMTOTAL = 15;
-	/**
-	 * 搜索深度
-	 */
-	public static int SEARCHDEEP = 6;
 	/**
 	 * 按搜索深度递减分数，为了让短路径的结果比深路劲的分数高
 	 */
@@ -49,7 +45,7 @@ public class Config {
 	/**
 	 * 先手方 (初始化黑棋先手)
 	 */
-	public static Part firstPart = Part.BLACK;
+	public static Part firstPart = Part.WHITE;
 	/**
 	 * 黑方运算
 	 */
@@ -62,7 +58,11 @@ public class Config {
 	/**
 	 * 搜索深度
 	 */
-	public static int deep = 6;
+	public static int SEARCHDEEP = 16;
+	/**
+	 * 搜索深度
+	 */
+	public static int KILLDEEP = 14;
 	
 	public static MouseCliceState mouseClickState = MouseCliceState.PLAY;
 

@@ -1,7 +1,5 @@
 package algorithm;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -67,7 +65,7 @@ public class Base {
 	 * @param board
 	 * @return
 	 */
-	public static List<Place> getRandomCenterPlace(Part[][] board) {
+	public static Place getRandomCenterPlace(Part[][] board) {
 		Random random = new Random();
 		int i = random.nextInt(Config.BOARDLENGTH - WIN_COUNT * 2) + WIN_COUNT;
 		int j = random.nextInt(Config.BOARDLENGTH - WIN_COUNT * 2) + WIN_COUNT;
@@ -75,7 +73,7 @@ public class Base {
 			JOptionPane.showMessageDialog(null, "³ö´íÁË£¡£¡£¡£¡");
 			throw new RuntimeException();
 		}
-		return Arrays.asList(PlacePool.getPlace(i, j));
+		return PlacePool.getPlace(i, j);
 	}
 
 	

@@ -35,22 +35,24 @@ public class GenePlaces {
 		return places;
 	}
 	
-//	/**
-//	 * @return 获取当前棋盘上可以下的点的List集合
-//	 */
-//	public static List<Place> getAllBlankPlaces(Part[][] board) {
-//		List<Place> placeSet = new ArrayList<>();
-//		for (int i = Config.BOARDLENGTH - 1 ; i >= 0; i--){
-//			for (int j = Config.BOARDLENGTH - 1; j >= 0; j--){
-//				//TODO Place被复用太多次
-//				if (board[i][j] == null){
-//					Place place = PlacePool.getPlace(i, j);
-//					placeSet.add(place);
-//				}
-//			}
-//		}
-//		return placeSet;
-//	}
+	
+	/**
+	 * 更新步数（棋子数）
+	 * @param board
+	 * @param steps
+	 */
+	public static void updateSteps(Part[][] board, int[] steps) {
+		for (int i = Config.BOARDLENGTH - 1 ; i >= 0; i--){
+			for (int j = Config.BOARDLENGTH - 1; j >= 0; j--){
+				if (Part.WHITE.equals(board[i][j])) {
+					steps[1] ++;
+				} else if (Part.BLACK.equals(board[i][j])){
+					steps[2] ++;
+				}
+			}
+		}
+		steps[0] = steps[1] + steps[2];
+	}
 	
 	/**
 	 * 启发式搜索函数
@@ -59,9 +61,12 @@ public class GenePlaces {
 	 * 和对整个棋盘进行打分的 evaluate 函数是不一样的。不过打分的基本原理是相同的。
 	 * 具体就是根据这个位置是否能成五，活四，活三等来进行打分
 	 * 
+	 * @param board 棋盘
+	 * @param thispt 当前势力
+	 * @param hasCommonPlace 是否包含普通棋子，true包含普通棋子， false只包含必杀棋（算杀）
 	 * @return
 	 */
-	public static List<Place> getHeuristicPlaces(final Part[][] board, final Part thispt) {
+	public static List<Place> getHeuristicPlaces(final Part[][] board, final Part thispt, boolean hasCommonPlace) {
 		Part otherPt = Part.getOpposide(thispt);
 		List<Place> curKill = null;
 		List<Place> otrKill = null;
@@ -71,7 +76,10 @@ public class GenePlaces {
 		List<Place> otrWinTo1_5pls = null;
 		List<Place> curWinTo2pls = null;
 		List<Place> otrWinTo2pls = null;
-		SortedPlaces sortedPlaces = new SortedPlaces();
+		SortedPlaces sortedPlaces = null;
+		if (hasCommonPlace){
+			sortedPlaces = new SortedPlaces();
+		}
 		for (int i = Config.BOARDLENGTH - 1 ; i >= 0; i--){
 			for (int j = Config.BOARDLENGTH - 1; j >= 0; j--){
 				if (board[i][j] == null){
@@ -97,7 +105,7 @@ public class GenePlaces {
 							otrWinTo1_5pls = addOrInit(otrWinTo1_5pls, place);
 						} else if (otrScore >= Score.KILL_TO_TWO){
 							otrWinTo2pls = addOrInit(otrWinTo2pls, place);
-						} else {
+						} else if (hasCommonPlace){
 							sortedPlaces.addOrInit(place, curScore + otrScore / 2);
 //							System.out.println(place + " " + thispt + " " + curScore + " " +  otrScore + " " + (curScore + otrScore));
 						}
@@ -122,11 +130,10 @@ public class GenePlaces {
 			return curWinTo2pls;
 		} else if (otrWinTo2pls != null) {
 			return otrWinTo2pls;
-		} else if (sortedPlaces.hasData()) {
+		} else if (hasCommonPlace && sortedPlaces.hasData()) {
 			return sortedPlaces.getSortedPlaces();
 		} else {
-			// 此时棋盘上空无一子，则随机在棋盘中心选一位置
-			return Base.getRandomCenterPlace(board);
+			return null;
 		}
 	}
 	

@@ -26,9 +26,9 @@ public class Main {
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, BLCK, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, WHIT, null, WHIT, null, null, null, null, null, null},
-				{null, null, null, null, null, WHIT, null, null, WHIT, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, WHIT, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, WHIT, WHIT, WHIT, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, WHIT, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
@@ -52,9 +52,9 @@ public class Main {
 //		int totle = main.evaluate();
 //		System.out.println(" ===========   totle : " + totle);
 //		main.scorePrint();
-		System.out.println(PointEvaluate.subPointEvaluate(main.board, 5, 8, 1, -1, WHIT));
-		System.out.println(PointEvaluate.subPointEvaluate(main.board, 5, 8, 1, 0, WHIT));
-		System.out.println(PointEvaluate.pointEvaluate(main.board, new Place(5, 8), WHIT));
+		System.out.println(PointEvaluate.subPointEvaluate(main.board, 7, 8, 0, 1, WHIT));
+		System.out.println(PointEvaluate.subPointEvaluate(main.board, 7, 8, 1, 0, WHIT));
+		System.out.println(PointEvaluate.pointEvaluate(main.board, new Place(7, 8), WHIT));
 	}
 	
 	

@@ -18,7 +18,7 @@ public class BoardEvaluate {
 	 */
 	public static int evaluate(Part[][] board, Part thispt) {
 		Part otherPt = Part.getOpposide(thispt);
-		List<Place> places = GenePlaces.getHeuristicPlaces(board, thispt);
+		List<Place> places = GenePlaces.getHeuristicPlaces(board, thispt, true);
 		BoardScoreRecord thisRecord = new BoardScoreRecord();
 		BoardScoreRecord otherRecord = new BoardScoreRecord();
 		for (Place place : places) {

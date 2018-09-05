@@ -4,8 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import entity.Part;
 import entity.Place;
+import entity.Score;
 import global.Config;
 import global.Global;
 
@@ -38,7 +41,7 @@ public class AlphaBeta {
 	 * 
 	 * 奇数层是电脑(max层)thisSide, 偶数层是human(min层)otherSide
 	 * 
-	 * @param deep 搜索深度(一定要是偶数, 因为每下一步都要考虑一下对手的防守)
+	 * @param SEARCHDEEP 搜索深度(一定要是偶数, 因为每下一步都要考虑一下对手的防守)
 	 * @param checkmateDeep
 	 * @return
 	 */
@@ -47,20 +50,21 @@ public class AlphaBeta {
 		PVcut = 0;
 		Part oppopt = Part.getOpposide(curPart);
 		//搜索深度
-		int deep = Config.deep;
+		int deep = Config.SEARCHDEEP;
 		// 1. 初始化各个变量
 		int best = MIN;
 //		count = 0;
 //		ABcut = 0;
 //		PVcut = 0;
-		// 复制棋盘(保险)
+		// 获取局势
 		Situation situation = Global.getSituation();
 		// 2. 获取可以下子的空位列表
 		// 生成待选的列表，就是可以下子的空位
-		List<Place> places = situation.getHeuristicPlaces(curPart);
-		if (places.isEmpty()){ 
+		List<Place> places = situation.getHeuristicPlaces(curPart, deep);
+		if (places == null || places.isEmpty()){ 
 			// 为空则证明棋盘上已没有空位
-			return null;
+			JOptionPane.showMessageDialog(null, "棋盘上未发现符合条件落子位置，请确认是否开启算杀");
+			throw new RuntimeException();
 		}
 		HashSet<Place> bestPlace = new HashSet<>();
 		// 3. 获取当前局势最好分数
@@ -91,11 +95,13 @@ public class AlphaBeta {
 	
 	public int maxmin(Situation situation, Part pt, int deep, int alphabeta) {
 		total ++;
-		int best = MIN;
 		// 获取空位
-		List<Place> places = situation.getHeuristicPlaces(pt);
+		List<Place> places = situation.getHeuristicPlaces(pt, deep);
+		int best = MIN;
+		if (places == null) {
+			return - Score.THREE;
+		}
 		Part oppopt = Part.getOpposide(pt);
-		
 		for (Place place : places){  // 如果跟之前的一个好，则把当前位子加入待选位子
 			situation.virtualLocatePiece(place, pt);
 			int score;

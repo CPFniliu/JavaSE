@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import algorithm.Situation;
 import domain.PieceFactory;
 import domain.PlacePool;
 import entity.Place;
@@ -76,14 +77,25 @@ public class GoBangPanel extends JPanel implements LambdaMouseListener {
 		new Thread(() -> {
 			while (Global.isComRunnable()) {
 				try {
+					Situation situation = Global.getSituation();
 					// 若当前执棋手是 COM
-					if (Role.COM.equals(Global.getSituation().getCurRole())){
+					if (Role.COM.equals(situation.getCurRole())){
+						long t1 = System.currentTimeMillis();
 						// TODO 显示轮到COM来继续的信息
-						// 获取COM计算的位置
-						Place computedPalce = Global.getSituation().evaluatedPlace();
-						if (computedPalce == null){
+						// 若棋盘已满，返回null
+						if (situation.isBoardFull()) {
 							isAnotherGame("已经没有可以下的位子,是否开启下一局", "阿拉拉");
 						}
+						Place computedPalce = null;
+						// 若棋盘为空，则随机在棋盘中心选一位置
+						if (situation.isBoardBlank()) {
+							computedPalce = situation.getRandomCenterPlace();
+						} else {
+							// 获取COM计算的位置
+							computedPalce = situation.evaluatedPlace();
+						}
+						long t2 = System.currentTimeMillis();
+						System.out.println("time : " + (t2 - t1));
 						// 落子
 						boolean isWin = pushPiece(computedPalce);
 						// 判断是否结束

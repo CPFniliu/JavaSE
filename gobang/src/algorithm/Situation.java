@@ -13,6 +13,7 @@ public class Situation implements Cloneable{
 
 	public Situation() {
 		board = new Part[Config.BOARDLENGTH][Config.BOARDLENGTH];
+		steps = new int[3];
 		// 获取先手方配置信息
 		curPart = Config.firstPart;
 	}
@@ -22,17 +23,9 @@ public class Situation implements Cloneable{
 	 */
 	public Part[][] board = null;
 	/**
-	 * 当前走的步数
+	 * [当前走的步数, 黑棋步数, 白棋步数]
 	 */
-	public int totalstep;
-	/**
-	 * 黑棋当前走的步数
-	 */
-	public int blackStep;
-	/**
-	 * 白棋当前走的步数
-	 */
-	public int whiteStep;
+	public int[] steps = null;
 	/**
 	 * 最后的行走的位置
 	 */
@@ -107,15 +100,9 @@ public class Situation implements Cloneable{
 		// 势力
 		this.lastPlace = place;
 		this.lastPart = part;
-		// 步数
-		++ totalstep;
-		if (Part.WHITE == part){
-			whiteStep ++;
-		} else {
-			blackStep ++;
-		}
 		// 更改下步活动势力方
 		curPart = Part.getOpposide(part);
+		GenePlaces.updateSteps(board, steps);
 		return isWin(place, part);
 	}
 
@@ -139,21 +126,34 @@ public class Situation implements Cloneable{
 		return GenePlaces.getHasNeighborPlaces(board);
 	}
 	
-//	/**
-//	 * @return 获取当前棋盘上可以下的点的List集合
-//	 */
-//	public List<Place> getAllBlankPlaces() {
-//		return GenePlaces.getAllBlankPlaces(board);
-//	}
-	
 	/**
 	 * 启发式搜索函数
 	 * @return
 	 */
-	public List<Place> getHeuristicPlaces(Part thispt) {
-		return GenePlaces.getHeuristicPlaces(board, thispt);
+	public List<Place> getHeuristicPlaces(Part thispt, int deep) {
+		return GenePlaces.getHeuristicPlaces(board, thispt, deep > Config.KILLDEEP);
 	}
 	
+	/**
+	 * 棋盘为空
+	 * @return
+	 */
+	public boolean isBoardBlank(){
+		return steps[0] == 0;
+	}
+	
+
+	/**
+	 * 棋盘已满
+	 * @return
+	 */
+	public boolean isBoardFull(){
+		return steps[0] == Config.BOARDLENGTH * Config.BOARDLENGTH;
+	}
+	
+	public Place getRandomCenterPlace() {
+		return Base.getRandomCenterPlace(board);
+	}
 	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
